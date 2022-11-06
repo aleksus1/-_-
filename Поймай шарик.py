@@ -82,7 +82,7 @@ while not finished:
                 not_miss = 0
             if misses == 5: finished = True  # Проигрыш при пяти промахах
     multipul_balls()
-    if repeat < number_of_balls:
+    if repeat < number_of_balls: #Проверка наличия на экране необходимого числа шариков(один шарик появляется за одно повторение)
         repeat +=1
         screen.fill(BLACK)
     else:
