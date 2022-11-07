@@ -23,9 +23,9 @@ number_of_balls = 4
 absis = [0 for i in range(number_of_balls)]
 ordinate = [0 for i in range(number_of_balls)]
 radius = [0 for i in range(number_of_balls)]
-velocity = []
+velocity = [[0, 0] for i in range(number_of_balls)]
 repeat = 0
-colour = []
+colour = [0 for i in range(number_of_balls)]
 cycle = 0
 gold = 0
 
@@ -131,9 +131,8 @@ finished = False
 
 while not finished:
     multiple_balls()
-    if repeat < number_of_balls:  # Проверка наличия на экране необходимого числа шариков посе запуска
-        repeat += 1
-    elif cycle < 20:  # Реализуем движение шариков
+
+    if cycle < 20:  # Реализуем движение шариков
         clock.tick(FPS)
         ball_move()
         pg.display.update()
