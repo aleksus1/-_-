@@ -5,7 +5,6 @@ from math import *
 
 import pygame as pg
 
-
 FPS = 30
 
 RED = 0xFF0000
@@ -28,10 +27,12 @@ acseleration = 0.98
 WIDTH = 1200
 HEIGHT = 600
 
+
 def rotate_rect(scr, x, y, a, b, alf, color):
-    pg.draw.polygon(scr, color, [(x, y), (x+a*cos(alf), y+a*sin(alf)),
-                            (x+a*cos(alf)-b*sin(alf), y+a*sin(alf)+b*cos(alf)),
-                            (x-b*sin(alf), y+b*cos(alf)), (x, y)])
+    pg.draw.polygon(scr, color, [(x, y), (x + a * cos(alf), y + a * sin(alf)),
+                                 (x + a * cos(alf) - b * sin(alf), y + a * sin(alf) + b * cos(alf)),
+                                 (x - b * sin(alf), y + b * cos(alf)), (x, y)])
+
 
 class Ball():
     def __init__(self, screen: pg.Surface):
@@ -45,14 +46,13 @@ class Ball():
         self.acseleration = acseleration
         self.screen = screen
         self.x = gun.gunpos
-        self.y = HEIGHT-50
+        self.y = HEIGHT - 50
         self.r = 10
         self.vx = 0
         self.vy = 0
         self.color = choice(GAME_COLORS)
         self.live = 30
         self.type = bullet_type
-
 
     def move(self):
         """Переместить мяч по прошествии единицы времени.
@@ -71,8 +71,8 @@ class Ball():
             self.vx = 0
         if self.type == 1:
             pg.draw.circle(self.screen, self.color, (self.x, self.y), self.r)
-        else:pg.draw.circle(self.screen, DARK_GREEN, (self.x, self.y), self.r)
-
+        else:
+            pg.draw.circle(self.screen, DARK_GREEN, (self.x, self.y), self.r)
 
     def hittest(self, obj, i):
         """Функция проверяет сталкивалкивается ли данный обьект с целью, описываемой в обьекте obj.
@@ -82,10 +82,12 @@ class Ball():
         Returns:
             Возвращает True в случае столкновения мяча и цели. В противном случае возвращает False.
         """
-        if (self.x - obj.x[i])**2 + (self.y - obj.y[i])**2 <= (self.r+obj.r[i])**2:
+        if (self.x - obj.x[i]) ** 2 + (self.y - obj.y[i]) ** 2 <= (self.r + obj.r[i]) ** 2:
             return 1
 
-        else: return 0
+        else:
+            return 0
+
     def bombhittest(self, obj):
         """Функция проверяет сталкивалкивается ли данный обьект с целью, описываемой в обьекте obj.
 
@@ -94,10 +96,11 @@ class Ball():
         Returns:
             Возвращает True в случае столкновения мяча и цели. В противном случае возвращает False.
         """
-        if (self.x - obj.x)**2 + (self.y - obj.y)**2 <= (self.r+15)**2:
+        if (self.x - obj.x) ** 2 + (self.y - obj.y) ** 2 <= (self.r + 15) ** 2:
             return 1
 
-        else: return 0
+        else:
+            return 0
 
 
 class Gun:
@@ -107,7 +110,7 @@ class Gun:
         self.f2_on = 0
         self.an = 1
         self.color = GREY
-        self.gunpos = WIDTH/2
+        self.gunpos = WIDTH / 2
         self.lives = lives
 
     def fire2_start(self, event):
@@ -123,7 +126,7 @@ class Gun:
         bullet += 1
         new_ball = Ball(self.screen)
         new_ball.r += 5
-        self.an = atan2((event.pos[1]-new_ball.y), (event.pos[0]-new_ball.x))
+        self.an = atan2((event.pos[1] - new_ball.y), (event.pos[0] - new_ball.x))
         new_ball.vx = self.f2_power * cos(self.an)
         new_ball.vy = self.f2_power * sin(self.an)
         balls.append(new_ball)
@@ -134,19 +137,21 @@ class Gun:
         """Прицеливание. Зависит от положения мыши."""
         if event:
             if event.pos[1] < HEIGHT - 50:
-                self.an = -acos((event.pos[0]-self.gunpos)/sqrt((event.pos[1]-HEIGHT+50)**2+(event.pos[0]-self.gunpos)**2))
-            else: self.an = acos((event.pos[0]-self.gunpos)/sqrt((event.pos[1]-HEIGHT+50)**2+(event.pos[0]-self.gunpos)**2))
-
+                self.an = -acos((event.pos[0] - self.gunpos) / sqrt(
+                    (event.pos[1] - HEIGHT + 50) ** 2 + (event.pos[0] - self.gunpos) ** 2))
+            else:
+                self.an = acos((event.pos[0] - self.gunpos) / sqrt(
+                    (event.pos[1] - HEIGHT + 50) ** 2 + (event.pos[0] - self.gunpos) ** 2))
 
         if self.f2_on:
             self.color = RED
         else:
             self.color = GREY
 
-    def draw(self): #Добавил индикатор уровня зарядки
-        rotate_rect(self.screen, self.gunpos, HEIGHT-50, 15, 100, -pi / 2 + self.an, GREY)
-        rotate_rect(self.screen, self.gunpos, HEIGHT-50, 15, self.f2_power, -pi/2 + self.an, self.color)
-        pg.draw.rect(self.screen, GREY, (self.gunpos - 50, HEIGHT-65, 100, 50))
+    def draw(self):  # Добавил индикатор уровня зарядки
+        rotate_rect(self.screen, self.gunpos, HEIGHT - 50, 15, 100, -pi / 2 + self.an, GREY)
+        rotate_rect(self.screen, self.gunpos, HEIGHT - 50, 15, self.f2_power, -pi / 2 + self.an, self.color)
+        pg.draw.rect(self.screen, GREY, (self.gunpos - 50, HEIGHT - 65, 100, 50))
 
     def power_up(self):
         if self.f2_on:
@@ -155,15 +160,19 @@ class Gun:
             self.color = RED
         else:
             self.color = GREY
+
     def draw_lives(self):
         for i in range(self.lives):
-            pg.draw.circle(self.screen, MAGENTA, (WIDTH/2+20*(i-self.lives/2), 575), 10)
+            pg.draw.circle(self.screen, MAGENTA, (WIDTH / 2 + 20 * (i - self.lives / 2), 575), 10)
+
     def gun_hit(self):
         self.lives -= 1
-        if self.lives>0:
+        if self.lives > 0:
             return False
-        else: return True
-    def new_health(self, health): #Регулирование уровня здоровья танка
+        else:
+            return True
+
+    def new_health(self, health):  # Регулирование уровня здоровья танка
         self.lives = health
 
 
@@ -175,6 +184,7 @@ class Target:
         self.r = []
         self.velx = []
         self.vely = []
+
     def oneshot(self):
         self.points = 0
         self.live += 1
@@ -182,18 +192,17 @@ class Target:
 
     def new_target(self):
         """ Инициализация новой цели. """
-        self.x.append(randint(100, WIDTH-100))
-        self.y.append(randint(100, HEIGHT-175))
+        self.x.append(randint(100, WIDTH - 100))
+        self.y.append(randint(100, HEIGHT - 175))
         self.r.append(randint(5, 25))
         self.velx.append(randint(-5, 5))
         self.vely.append(randint(-5, 5))
         self.color = RED
 
-
     def hit(self, points=1):
         """Попадание шарика в цель."""
         self.points = points
-        self.x = self.x[:i] + self.x[i+1:]
+        self.x = self.x[:i] + self.x[i + 1:]
         self.y = self.y[:i] + self.y[i + 1:]
         self.r = self.r[:i] + self.r[i + 1:]
         return 1
@@ -203,7 +212,7 @@ class Target:
         self.y[i] += self.vely[i]
         if self.x[i] < self.r[i] or self.x[i] > WIDTH - self.r[i]:
             self.velx[i] = -self.velx[i]
-        if self.y[i] < self.r[i] or self.y[i] > HEIGHT-150 - self.r[i]:
+        if self.y[i] < self.r[i] or self.y[i] > HEIGHT - 150 - self.r[i]:
             self.vely[i] = -self.vely[i]
         pg.draw.circle(self.screen, self.color, (self.x[i], self.y[i]), self.r[i])
 
@@ -214,31 +223,36 @@ class Spec_Target(Target):
         self.an_frequency = []
         self.faze = []
         self.time = 0
-    def oneshot(self):
         self.points = 0
+
+    def oneshot(self):
+
         self.slive += 1
         self.new_target()
+
     def new_target(self):
         """ Инициализация новой спец.цели. """
         self.an_frequency.append(randint(1, 5))
-        self.faze.append(randint(-5, 5)/10)
-        self.x.append(randint(100, WIDTH-100))
-        self.y.append(randint(100, HEIGHT-175))
+        self.faze.append(randint(-5, 5) / 10)
+        self.x.append(randint(100, WIDTH - 100))
+        self.y.append(randint(100, HEIGHT - 175))
         self.r.append(randint(5, 25))
         self.velx.append(randint(-20, 20))
         self.vely.append(randint(-20, 20))
         self.color = YELLOW
+
     def draw(self, i):
-        self.speedx = self.velx[i] * sin(self.an_frequency[i] * self.time/150 + self.faze[i])
+        self.speedx = self.velx[i] * sin(self.an_frequency[i] * self.time / 150 + self.faze[i])
         self.x[i] += self.speedx
-        self.speedy = self.vely[i] * cos(self.an_frequency[i] * self.time/100 + self.faze[i])
+        self.speedy = self.vely[i] * cos(self.an_frequency[i] * self.time / 100 + self.faze[i])
         self.y[i] += self.speedy
-        self.time+=1
+        self.time += 1
         if self.x[i] < self.r[i] or self.x[i] > WIDTH - self.r[i]:
             self.velx[i] = -self.velx[i]
-        if self.y[i] < self.r[i] or self.y[i] > HEIGHT-150 - self.r[i]:
+        if self.y[i] < self.r[i] or self.y[i] > HEIGHT - 150 - self.r[i]:
             self.vely[i] = -self.vely[i]
         pg.draw.circle(self.screen, self.color, (self.x[i], self.y[i]), self.r[i])
+
     def hit(self):
         self.x = self.x[:i] + self.x[i + 1:]
         self.y = self.y[:i] + self.y[i + 1:]
@@ -249,7 +263,7 @@ class Spec_Target(Target):
 class Bomb(Ball, Target):
     def __init__(self):
         super().__init__(screen)
-        self.acseleration = 0.98/3
+        self.acseleration = 0.98 / 3
         self.screen = screen
         self.x = randint(0, WIDTH)
         self.y = 20
@@ -269,6 +283,7 @@ class Bomb(Ball, Target):
         pg.draw.circle(self.screen, self.color, (self.x, self.y), 10)
         if self.y > HEIGHT:
             bombs = bombs[1:]
+
     def draw(self):
         pg.draw.circle(self.screen, self.color, (self.x, self.y), self.r)
 
@@ -322,7 +337,7 @@ while not finished:
             shots_counter += 1
         elif event.type == pg.MOUSEMOTION:
             gun.aiming(event)
-        elif event.type == pg.KEYDOWN: #Делаю чит на отключение гравитации (не знаю зачем)
+        elif event.type == pg.KEYDOWN:  # Делаю чит на отключение гравитации (не знаю зачем)
             if event.key == pg.K_g and acseleration != 0:
                 acseleration = 0
             elif event.key == pg.K_g and acseleration == 0:
@@ -343,7 +358,6 @@ while not finished:
             if event.key == pg.K_d:
                 RIGHT = False
 
-
     if LEFT:
         gun.gunpos -= 10
     if RIGHT:
@@ -352,7 +366,7 @@ while not finished:
     for b in balls:
         b.move()
         for i in range(number_of_targets):
-            if b.hittest(target, i)and target.live>0 and bullet_type == 1:
+            if b.hittest(target, i) and target.live > 0 and bullet_type == 1:
                 target.live -= 1
                 counter += target.hit()
                 shots_counter = 0
@@ -360,7 +374,7 @@ while not finished:
                 b.vx = 0
                 b.x = -20
         for i in range(number_of_stargets):
-            if b.hittest(spec_target, i)and target.live>0 and bullet_type == 2:
+            if b.hittest(spec_target, i) and target.live > 0 and bullet_type == 2:
                 spec_target.slive -= 1
                 counter += spec_target.hit()
                 shots_counter = 0
@@ -371,17 +385,15 @@ while not finished:
         for b in balls:
             if b.bombhittest(bomb):
                 bombs = bombs[:bombs.index(bomb)] + bombs[bombs.index(bomb) + 1:]
-                balls = balls[:balls.index((b))] + balls[balls.index((b))+1:]
+                balls = balls[:balls.index((b))] + balls[balls.index((b)) + 1:]
         bomb.move()
-        if bomb.x <= gun.gunpos+50 and bomb.x >= gun.gunpos-50:
-            if bomb.y <= HEIGHT - 65 and bomb.y >= HEIGHT -65 - 25:
-                bombs = bombs[:bombs.index(bomb)] + bombs[bombs.index(bomb)+1:]
+        if bomb.x <= gun.gunpos + 50 and bomb.x >= gun.gunpos - 50:
+            if bomb.y <= HEIGHT - 65 and bomb.y >= HEIGHT - 65 - 25:
+                bombs = bombs[:bombs.index(bomb)] + bombs[bombs.index(bomb) + 1:]
                 if gun.gun_hit():
                     finished = True
                     print("\n", "Your tank was destroyed")
     gun.power_up()
 
-
 pg.quit()
 print("Your score is", counter)
-
