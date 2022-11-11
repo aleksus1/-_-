@@ -404,8 +404,9 @@ while finished:
     f1 = pg.font.Font(None, 50)
     if destr:
         text1 = f1.render('Your tank was destroyed', True, (180, 0, 0))
+        screen.blit(text1, (WIDTH/4, HEIGHT/2))
     text2 = f1.render('Your score is ' + str(counter), True, (180, 0, 0))
-    screen.blit(text1, (WIDTH/4, HEIGHT/2))
+
     screen.blit(text2, (WIDTH / 4, HEIGHT / 2+100))
     pg.display.update()
 pg.quit()
