@@ -391,9 +391,21 @@ while not finished:
             if bomb.y <= HEIGHT - 65 and bomb.y >= HEIGHT - 65 - 25:
                 bombs = bombs[:bombs.index(bomb)] + bombs[bombs.index(bomb) + 1:]
                 if gun.gun_hit():
+                    destr = True
                     finished = True
-                    print("\n", "Your tank was destroyed")
     gun.power_up()
 
+while finished:
+    screen.fill(WHITE)
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            finished = False
+    f1 = pg.font.Font(None, 50)
+    if destr:
+        text1 = f1.render('Your tank was destroyed', True, (180, 0, 0))
+    text2 = f1.render('Your score is ' + str(counter), True, (180, 0, 0))
+    screen.blit(text1, (WIDTH/4, HEIGHT/2))
+    screen.blit(text2, (WIDTH / 4, HEIGHT / 2+100))
+    pg.display.update()
 pg.quit()
-print("Your score is", counter)
+
