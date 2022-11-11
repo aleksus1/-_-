@@ -305,6 +305,7 @@ bomb = Bomb()
 finished = False
 LEFT = False
 RIGHT = False
+destr = False
 
 while not finished:
     screen.fill(WHITE)
